@@ -34,10 +34,10 @@ const Orders = () => {
   useEffect(() => {
     fetchOrders();
 
-    // Auto-refresh every 30 seconds
+    // Auto-refresh every 10 seconds
     const interval = setInterval(() => {
       fetchOrders(true);
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
