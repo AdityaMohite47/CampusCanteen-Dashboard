@@ -19,16 +19,18 @@ export interface MenuItem {
   _id: string;
   name: string;
   price: number;
+  availability?: boolean;
 }
 
 export interface NewMenuItem {
   name: string;
   price: number;
+  availability?: boolean;
 }
 
 // Orders API
 export const ordersApi = {
-  getAll: async (): Promise<Order[]> => {
+  getAll: async (): Promise<any[]> => {
     const response = await fetch(`${API_BASE_URL}/orders`);
     if (!response.ok) throw new Error('Failed to fetch orders');
     return response.json();

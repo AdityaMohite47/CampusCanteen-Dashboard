@@ -31,8 +31,9 @@ const normalized = safeData.map((o) => ({
 }));
 
 
-      // Sort latest first
-      const sortedOrders = normalized.sort(
+      // Filter out completed orders and sort latest first
+      const filteredOrders = normalized.filter(o => o.status !== "Completed");
+      const sortedOrders = filteredOrders.sort(
         (a, b) =>
           new Date(b.created_at).getTime() -
           new Date(a.created_at).getTime()
