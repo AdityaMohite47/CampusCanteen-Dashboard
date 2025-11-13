@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ordersApi, Order } from "@/lib/api";
+import { ordersApi } from "@/lib/api";
 
 const Orders = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -17,14 +17,32 @@ const Orders = () => {
       else setLoading(true);
 
       const data = await ordersApi.getAll();
-      // Sort by created_at, latest first
-      const sortedOrders = data.sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+
+      // Ensure data is always an array
+      const safeData = Array.isArray(data) ? data : [];
+
+      // Remap fields to your UI structure
+const normalized = safeData.map((o) => ({
+  order_id: o._id,
+  customer_name: o.phone_number ?? "Unknown",
+  items: o.ordered_items ?? [],     // <-- FIXED HERE
+  status: o.status ?? "Pending",
+  created_at: o.created_at ?? new Date().toISOString(),
+}));
+
+
+      // Sort latest first
+      const sortedOrders = normalized.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() -
+          new Date(a.created_at).getTime()
       );
+
       setOrders(sortedOrders);
     } catch (error) {
       toast.error("Failed to fetch orders");
       console.error("Error fetching orders:", error);
+      setOrders([]); // avoid crashes
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -34,7 +52,7 @@ const Orders = () => {
   useEffect(() => {
     fetchOrders();
 
-    // Auto-refresh every 10 seconds
+    // Auto-refresh every 10 sec
     const interval = setInterval(() => {
       fetchOrders(true);
     }, 10000);
@@ -75,7 +93,9 @@ const Orders = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Orders</h1>
-          <p className="text-muted-foreground mt-1">Manage incoming canteen orders</p>
+          <p className="text-muted-foreground mt-1">
+            Manage incoming canteen orders
+          </p>
         </div>
         <Button
           onClick={() => fetchOrders(true)}
@@ -108,7 +128,9 @@ const Orders = () => {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-lg">{order.customer_name}</CardTitle>
+                    <CardTitle className="text-lg">
+                      {order.customer_name}
+                    </CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">
                       {formatDate(order.created_at)}
                     </p>
@@ -125,12 +147,16 @@ const Orders = () => {
                   </Badge>
                 </div>
               </CardHeader>
+
               <CardContent>
                 <div className="space-y-2 mb-4">
                   <p className="text-sm font-medium text-foreground">Items:</p>
                   <ul className="space-y-1">
-                    {order.items.map((item, index) => (
-                      <li key={index} className="text-sm text-muted-foreground flex justify-between">
+                    {(order.items ?? []).map((item: any, index: number) => (
+                      <li
+                        key={index}
+                        className="text-sm text-muted-foreground flex justify-between"
+                      >
                         <span>{item.name}</span>
                         <span className="font-medium">x{item.quantity}</span>
                       </li>

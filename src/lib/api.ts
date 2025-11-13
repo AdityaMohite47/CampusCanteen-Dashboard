@@ -1,6 +1,6 @@
 // API utility functions for canteen admin dashboard
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = "http://localhost:5000/api";
 
 export interface OrderItem {
   name: string;
@@ -19,13 +19,11 @@ export interface MenuItem {
   _id: string;
   name: string;
   price: number;
-  availability: boolean;
 }
 
 export interface NewMenuItem {
   name: string;
   price: number;
-  availability: boolean;
 }
 
 // Orders API

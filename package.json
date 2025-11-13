@@ -43,10 +43,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
+    "express": "^5.1.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
+    "mongoose": "^8.19.3",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
@@ -79,5 +82,18 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19"
-  }
+  },
+  "description": "## Project info",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdityaMohite47/CampusCanteen-Dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdityaMohite47/CampusCanteen-Dashboard/issues"
+  },
+  "homepage": "https://github.com/AdityaMohite47/CampusCanteen-Dashboard#readme"
 }
