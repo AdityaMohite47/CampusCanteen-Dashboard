@@ -15,18 +15,18 @@ mongoose.connect("mongodb://root:root@localhost:27017/CampusCanteen?authSource=a
 const Order = mongoose.model(
   "Order",
   new mongoose.Schema({}, { strict: false }),
-  "Orders"     // exact collection name
+  "Orders"   
 );
 
 const Menu = mongoose.model(
   "Menu",
   new mongoose.Schema({}, { strict: false }),
-  "Menu"       // exact collection name
+  "Menu"       
 );
 
 // ---------------- ORDERS ----------------
 
-// Get all orders
+
 app.get("/api/orders", async (req, res) => {
   const orders = await Order.find({});
   res.json(orders);
@@ -55,7 +55,6 @@ app.patch("/api/orders/:id", async (req, res) => {
 
 // ---------------- MENU ----------------
 
-// Get menu
 app.get("/api/menu", async (req, res) => {
   const menu = await Menu.find({});
   res.json(menu);
