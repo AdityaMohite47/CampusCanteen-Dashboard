@@ -3,7 +3,6 @@ import { Plus, RefreshCw, Trash2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -36,7 +35,6 @@ const Menu = () => {
   const [newItem, setNewItem] = useState({
     name: "",
     price: "",
-    availability: true,
   });
 
   const [editValues, setEditValues] = useState<{ [key: string]: { name: string; price: string } }>(
@@ -73,10 +71,9 @@ const Menu = () => {
       await menuApi.create({
         name: newItem.name.trim(),
         price: parseFloat(newItem.price),
-        availability: newItem.availability,
       });
       toast.success("Menu item added successfully");
-      setNewItem({ name: "", price: "", availability: true });
+      setNewItem({ name: "", price: "" });
       setIsAddDialogOpen(false);
       fetchMenuItems(true);
     } catch (error) {
@@ -85,16 +82,6 @@ const Menu = () => {
     }
   };
 
-  const handleToggleAvailability = async (item: MenuItem) => {
-    try {
-      await menuApi.update(item._id, { availability: !item.availability });
-      toast.success(`${item.name} is now ${!item.availability ? "available" : "unavailable"}`);
-      fetchMenuItems(true);
-    } catch (error) {
-      toast.error("Failed to update availability");
-      console.error("Error updating availability:", error);
-    }
-  };
 
   const handleStartEdit = (item: MenuItem) => {
     setEditingItem(item._id);
@@ -192,15 +179,6 @@ const Menu = () => {
                     onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-foreground">Available</label>
-                  <Switch
-                    checked={newItem.availability}
-                    onCheckedChange={(checked) =>
-                      setNewItem({ ...newItem, availability: checked })
-                    }
-                  />
-                </div>
                 <Button onClick={handleAddItem} className="w-full">
                   Add Item
                 </Button>
@@ -231,9 +209,6 @@ const Menu = () => {
                     </th>
                     <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">
                       Price
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-medium text-muted-foreground">
-                      Available
                     </th>
                     <th className="text-right py-3 px-4 text-sm font-medium text-muted-foreground">
                       Actions
@@ -281,13 +256,6 @@ const Menu = () => {
                         ) : (
                           <span className="text-foreground">₹{item.price}</span>
                         )}
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <Switch
-                          checked={item.availability}
-                          onCheckedChange={() => handleToggleAvailability(item)}
-                          disabled={editingItem === item._id}
-                        />
                       </td>
                       <td className="py-3 px-4 text-right">
                         <div className="flex gap-2 justify-end">
