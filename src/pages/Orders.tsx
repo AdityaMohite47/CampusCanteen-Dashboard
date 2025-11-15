@@ -25,7 +25,8 @@ const Orders = () => {
 const normalized = safeData.map((o) => ({
   order_id: o._id,
   customer_name: o.phone_number ?? "Unknown",
-  items: o.ordered_items ?? [],     // <-- FIXED HERE
+  token_no: o.token_no ?? "N/A",
+  items: o.ordered_items ?? [],
   status: o.status ?? "Pending",
   created_at: o.created_at ?? new Date().toISOString(),
 }));
@@ -129,9 +130,14 @@ const normalized = safeData.map((o) => ({
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-lg">
-                      {order.customer_name}
-                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-lg">
+                        {order.customer_name}
+                      </CardTitle>
+                      <Badge variant="outline" className="text-xs">
+                        Token #{order.token_no}
+                      </Badge>
+                    </div>
                     <p className="text-sm text-muted-foreground mt-1">
                       {formatDate(order.created_at)}
                     </p>
