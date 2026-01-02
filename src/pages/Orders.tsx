@@ -131,13 +131,15 @@ const normalized = safeData.map((o) => ({
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <CardTitle className="text-lg">
-                        {order.customer_name}
-                      </CardTitle>
-                      <Badge variant="outline" className="text-xs">
-                        Token #{order.token_no}
-                      </Badge>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-3">
+                        <Badge className="bg-primary text-primary-foreground text-xl font-bold px-4 py-2 rounded-lg shadow-md">
+                          #{order.token_no}
+                        </Badge>
+                        <CardTitle className="text-lg">
+                          {order.customer_name}
+                        </CardTitle>
+                      </div>
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
                       {formatDate(order.created_at)}
