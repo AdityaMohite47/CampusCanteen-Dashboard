@@ -25,11 +25,12 @@ const Orders = () => {
 const normalized = safeData.map((o) => ({
   order_id: o._id,
   customer_name: o.phone_number ?? "Unknown",
-  token_no: o.token_no ?? "N/A",
+  token_no: o.token ?? "N/A",   
   items: o.ordered_items ?? [],
   status: o.status ?? "Pending",
   created_at: o.created_at ?? new Date().toISOString(),
 }));
+
 
 
       // Filter out completed orders and sort latest first
