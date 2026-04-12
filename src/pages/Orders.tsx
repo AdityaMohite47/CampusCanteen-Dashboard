@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { ordersApi } from "@/lib/api";
 
 const Orders = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -162,6 +163,7 @@ const normalized = safeData.map((o) => ({
                 <div className="space-y-2 mb-4">
                   <p className="text-sm font-medium text-foreground">Items:</p>
                   <ul className="space-y-1">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {(order.items ?? []).map((item: any, index: number) => (
                       <li
                         key={index}

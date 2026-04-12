@@ -30,6 +30,7 @@ export interface NewMenuItem {
 
 // Orders API
 export const ordersApi = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAll: async (): Promise<any[]> => {
     const response = await fetch(`${API_BASE_URL}/orders`);
     if (!response.ok) throw new Error('Failed to fetch orders');

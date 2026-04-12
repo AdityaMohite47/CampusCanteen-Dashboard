@@ -67,6 +67,14 @@ const Menu = () => {
       return;
     }
 
+    const duplicate = menuItems.find(
+      (item) => item.name.toLowerCase() === newItem.name.trim().toLowerCase()
+    );
+    if (duplicate) {
+      toast.error(`"${newItem.name.trim()}" already exists in the menu`);
+      return;
+    }
+
     try {
       await menuApi.create({
         name: newItem.name.trim(),
