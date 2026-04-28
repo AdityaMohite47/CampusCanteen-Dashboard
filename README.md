@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# CampusCanteen — Frontend
 
-## Project info
+Admin dashboard for managing canteen orders and menu items. Built with React and Tailwind CSS, backed by an Express + MongoDB service.
 
-**URL**: https://lovable.dev/projects/a1d9310b-770d-4233-bfc3-29d19b8f5396
+## Tech Stack
 
-## How can I edit this code?
+| Layer | Technology |
+|---|---|
+| UI | React 18 (JavaScript/JSX) |
+| Styling | Tailwind CSS |
+| HTTP Client | Axios |
+| Routing | React Router v6 |
+| Notifications | Sonner |
+| Icons | Lucide React |
+| Build Tool | Vite |
+| API Server | Express.js + Mongoose |
 
-There are several ways of editing your application.
+## Project Structure
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/a1d9310b-770d-4233-bfc3-29d19b8f5396) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+CampusCanteen-FE/
+├── index.html
+├── vite.config.js
+├── tailwind.config.js
+├── service.cjs          # Express API server (port 5000) — connects to MongoDB
+└── src/
+    ├── main.jsx         # App entry point
+    ├── App.jsx          # Router setup
+    ├── index.css        # Tailwind base + CSS variables
+    ├── lib/
+    │   ├── axios.js     # Axios instance (baseURL: localhost:5000/api)
+    │   └── api.js       # ordersApi and menuApi
+    ├── components/
+    │   └── Layout.jsx   # Sidebar + mobile nav shell
+    └── pages/
+        ├── Orders.jsx   # Pending orders grid, auto-refreshes every 10s
+        ├── Menu.jsx     # Menu CRUD — add, edit, delete items
+        └── NotFound.jsx
 ```
 
-**Edit a file directly in GitHub**
+## Pages
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Orders** (`/`)
+- Displays all pending orders as cards
+- Shows token number, phone, items, timestamp
+- Mark as Served button removes the order from the list
+- Auto-refreshes every 10 seconds
 
-**Use GitHub Codespaces**
+**Menu** (`/menu`)
+- Table of all menu items with inline editing
+- Add new items via modal dialog (duplicate name check)
+- Delete with confirmation dialog
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## API Endpoints (service.cjs)
 
-## What technologies are used for this project?
+| Method | Path | Action |
+|---|---|---|
+| GET | `/api/orders` | Fetch all orders |
+| PATCH | `/api/orders/:id` | Update order status |
+| GET | `/api/menu` | Fetch all menu items |
+| POST | `/api/menu` | Create menu item |
+| PUT | `/api/menu/:id` | Update menu item |
+| DELETE | `/api/menu/:id` | Delete menu item |
 
-This project is built with:
+## Setup & Run
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+# Install dependencies
+npm install
 
-## How can I deploy this project?
+# Terminal 1 — Express API server (MongoDB)
+node service.cjs
 
-Simply open [Lovable](https://lovable.dev/projects/a1d9310b-770d-4233-bfc3-29d19b8f5396) and click on Share -> Publish.
+# Terminal 2 — Vite dev server
+npm run dev
+# opens at http://localhost:8080
+```
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Make sure MongoDB is running before starting `service.cjs`:
+```bash
+sudo systemctl start mongod
+```
